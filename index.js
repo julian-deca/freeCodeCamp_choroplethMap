@@ -8,7 +8,7 @@ d3.select("div")
   .text(
     "Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)"
   );
-const w = 1500;
+const w = 1000;
 const h = 700;
 const padding = 70;
 const svg = d3.select("div").append("svg").attr("width", w).attr("height", h);
@@ -63,37 +63,42 @@ async function proceede() {
     .append("path")
     .attr("class", "county")
     .attr("d", path)
-    .attr("data-fips", (d, i) => {
-      return edu[i].fips;
+    .attr("data-fips", (d) => {
+      return d.id;
     })
     .attr("data-education", (d, i) => {
-      return edu[i].bachelorsOrHigher;
+      const data = edu.filter((e) => {
+        return e.fips === d.id;
+      });
+      return data[0].bachelorsOrHigher;
     })
     .attr("fill", (d, i) => {
+      const data = edu.filter((e) => {
+        return e.fips === d.id;
+      });
+      const color = data[0].bachelorsOrHigher;
       return (
         "rgb(" +
-        (greenScale(edu[i].bachelorsOrHigher) - 70) +
+        (greenScale(color) - 70) +
         "," +
-        greenScale(edu[i].bachelorsOrHigher) +
+        greenScale(color) +
         "," +
-        (greenScale(edu[i].bachelorsOrHigher) - 70) +
+        (greenScale(color) - 70) +
         ")"
       );
     })
-    .attr("state", (d, i) => {
-      return edu[i].state;
-    })
-    .attr("name", (d, i) => {
-      return edu[i].area_name;
-    })
     .on("mouseover", (evt, d) => {
-      const education = evt.target.getAttribute("data-education");
-      const state = evt.target.getAttribute("state");
-      const name = evt.target.getAttribute("name");
+      const data = edu.filter((e) => {
+        return e.fips === d.id;
+      });
+
+      const education = data[0].bachelorsOrHigher;
+      const state = data[0].state;
+      const name = data[0].area_name;
 
       div
         .style("opacity", 0.9)
-        .attr("data-education", d)
+        .attr("data-education", education)
         .html(name + ", " + state + " : " + education + "%")
         .style("left", evt.pageX + 30 + "px")
         .style("top", evt.pageY + "px");
@@ -101,6 +106,113 @@ async function proceede() {
     .on("mouseout", (evt, d) => {
       div.style("opacity", 0);
     });
-
+  const legend = svg.append("g").attr("id", "legend");
+  const leyendScale = d3.scaleLinear().domain([0, 60]).range([padding, 300]);
+  const leyendAxis = d3
+    .axisBottom(leyendScale)
+    .ticks(6)
+    .tickFormat((d) => {
+      return d + "%";
+    });
+  legend
+    .append("g")
+    .attr("transform", "translate(0," + (h - 17) + " )")
+    .call(leyendAxis);
+  legend
+    .append("rect")
+    .attr("x", leyendScale(0))
+    .attr("y", h - 37)
+    .attr("width", 1 + 300 / 8)
+    .attr("height", 20)
+    .attr(
+      "fill",
+      "rgb(" +
+        (greenScale(10) - 70) +
+        "," +
+        greenScale(10) +
+        "," +
+        (greenScale(10) - 70) +
+        ")"
+    );
+  legend
+    .append("rect")
+    .attr("x", leyendScale(10))
+    .attr("y", h - 37)
+    .attr("width", 1 + 300 / 8)
+    .attr("height", 20)
+    .attr(
+      "fill",
+      "rgb(" +
+        (greenScale(20) - 70) +
+        "," +
+        greenScale(20) +
+        "," +
+        (greenScale(20) - 70) +
+        ")"
+    );
+  legend
+    .append("rect")
+    .attr("x", leyendScale(20))
+    .attr("y", h - 37)
+    .attr("width", 1 + 300 / 8)
+    .attr("height", 20)
+    .attr(
+      "fill",
+      "rgb(" +
+        (greenScale(30) - 70) +
+        "," +
+        greenScale(30) +
+        "," +
+        (greenScale(30) - 70) +
+        ")"
+    );
+  legend
+    .append("rect")
+    .attr("x", leyendScale(30))
+    .attr("y", h - 37)
+    .attr("width", 1 + 300 / 8)
+    .attr("height", 20)
+    .attr(
+      "fill",
+      "rgb(" +
+        (greenScale(40) - 70) +
+        "," +
+        greenScale(40) +
+        "," +
+        (greenScale(40) - 70) +
+        ")"
+    );
+  legend
+    .append("rect")
+    .attr("x", leyendScale(40))
+    .attr("y", h - 37)
+    .attr("width", 1 + 300 / 8)
+    .attr("height", 20)
+    .attr(
+      "fill",
+      "rgb(" +
+        (greenScale(50) - 70) +
+        "," +
+        greenScale(50) +
+        "," +
+        (greenScale(50) - 70) +
+        ")"
+    );
+  legend
+    .append("rect")
+    .attr("x", leyendScale(50))
+    .attr("y", h - 37)
+    .attr("width", 1 + 300 / 8)
+    .attr("height", 20)
+    .attr(
+      "fill",
+      "rgb(" +
+        (greenScale(60) - 70) +
+        "," +
+        greenScale(60) +
+        "," +
+        (greenScale(60) - 70) +
+        ")"
+    );
   console.log(edu);
 }

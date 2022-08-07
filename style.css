@@ -1,5 +1,6 @@
 .container {
   text-align: center;
+  justify-content: center;
 }
 .county {
   stroke: black;
