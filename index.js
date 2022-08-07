@@ -214,5 +214,4 @@ async function proceede() {
         (greenScale(60) - 70) +
         ")"
     );
-  console.log(edu);
 }
