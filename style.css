@@ -5,3 +5,12 @@
   stroke: black;
   stroke-width: 0.3px;
 }
+#tooltip {
+  background-color: rgb(255, 252, 193);
+  padding: 3px;
+  position: absolute;
+  cursor: default;
+}
+.county:hover {
+  stroke-width: 1.2px;
+}

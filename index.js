@@ -79,6 +79,27 @@ async function proceede() {
         (greenScale(edu[i].bachelorsOrHigher) - 70) +
         ")"
       );
+    })
+    .attr("state", (d, i) => {
+      return edu[i].state;
+    })
+    .attr("name", (d, i) => {
+      return edu[i].area_name;
+    })
+    .on("mouseover", (evt, d) => {
+      const education = evt.target.getAttribute("data-education");
+      const state = evt.target.getAttribute("state");
+      const name = evt.target.getAttribute("name");
+
+      div
+        .style("opacity", 0.9)
+        .attr("data-education", d)
+        .html(name + ", " + state + " : " + education + "%")
+        .style("left", evt.pageX + 30 + "px")
+        .style("top", evt.pageY + "px");
+    })
+    .on("mouseout", (evt, d) => {
+      div.style("opacity", 0);
     });
 
   console.log(edu);
